@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: host-pid-test
+  name: host-pid-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: host-pid-test
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: host-pid-test
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        resources: {}
+        securityContext:
+          privileged: true
+      hostPID: true
+      nodeName: node1
+status: {}
