@@ -1,0 +1,31 @@
+Exercise 1.
+
+kubectl run busybox --image=busybox --restart=Never -o yaml --dry-run -- /bin/sh -c 'echo hello;sleep 3600' > multi-cont-exercise.yaml
+
+
+kubectl apply -f multi-cont-exercise.yaml
+
+
+kubectl describe deployment/busybox
+
+
+kubectl exec busybox --container=busybox2 -- ls
+
+
+//It is important to remember how to supply this as YAML without using kubectl --dry-run
+
+//containers:
+//- args:
+    - echo 
+    - "Hello World"
+    - sleep
+    - 3600
+    command:
+    - /bin/sh -c
+
+OR 
+//This is most reliable
+//- args:
+    - /bin/sh
+    - -c
+    - echo 'hello world';sleep 3600
