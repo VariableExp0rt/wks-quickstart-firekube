@@ -1,0 +1,9 @@
+Exercise 1.
+
+kubectl create ns mynamespace
+kubectl run --image=nginx nginx --restart=Never -n mynamespace
+
+
+Exercise 2.
+
+
