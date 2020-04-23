@@ -1,0 +1,16 @@
+  796  nano host-pid-example.yml
+  797  kubectl apply -f host-pid-example.yml
+  798  cat hostpath-hostpid-example.yaml
+  799  nano host-pid-example.yml
+  800  kubectl apply -f host-pid-example.yml
+  801  kubectl exec -it host-pid-test-6b5cc65775-t956s -- nsenter --target 1 --mount /bin/bash
+  802  kubectl get pods
+  803  kubectl exec -it host-pid-test-6f9cfcb497-rgbx9 -- nsenter --target 1 --mount /bin/bash
+  804  kubectl exec -it host-pid-test-6f9cfcb497-rgbx9 -- ps aux
+  805  kubectl exec -it host-pid-test-6f9cfcb497-rgbx9 -- /bin/sh
+  806  git add host-pid-example.yml
+  807  git push
+  808  git commit -a -m 'Updated'
+  809  git push
+  810  git pull
+  811  git push

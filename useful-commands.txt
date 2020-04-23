@@ -1,0 +1,16 @@
+  752  nano hostpath-hostpid-nsenter-example.yaml
+  753  git add hostpath-hostpid-nsenter-example.yaml
+  754  git commit -a -m 'HostPath - Change Metadata'
+  755  git push
+  756  kubectl get pods
+  757  git rm hostpath-hostpid-nsenter-example.yaml
+  758  ls
+  759  kubectl explain pod.spec.containers
+  760  kubectl explain pod.spec.hostPID
+  761  kubectl explain pod.spec.nodeName
+  762  kubectl explain pod.spec.nodeSelector
+  763  git add hostpath-hostpid-example.yaml
+  764  git commit -a -m 'HostPath YAML fixed'
+  765  git push
+  766  cat hostpath-hostpid-example.yaml
+  767  kubectl exec -it pod/test-5b5688ddbb-c4lm7 -- /bin/sh
