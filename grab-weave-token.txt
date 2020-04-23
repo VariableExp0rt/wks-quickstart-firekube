@@ -1,0 +1,23 @@
+ 1285  kubectl get pods -v 6
+ 1286  kubectl proxy &
+ 1287  curl https://127.0.0.1:6443/api/v1/namespaces/default/pods?
+ 1288  curl https://127.0.0.1:6443/api/v1/namespaces/default/pods
+ 1289  curl -sk https://127.0.0.1:6443/api/v1/namespaces/default/pods
+ 1290  curl -sk https://127.0.0.1:6443/api/v1/namespaces/default/pods --token 
+ 1291  curl -sk https://127.0.0.1:6443/api/v1/namespaces/default/pods -H "Authorization: Bearer
+ 1292  fg
+ 1293  kubectl exec weave-net-d84sc -n weavek8sops -- cat /var/run/kuberntes.io/secrets/serviceaccount/token 
+ 1294  kubectl exec weave-net-d84sc -n weavek8sops -- ls /var/run/kuberntes.io/secrets/serviceaccount/
+ 1295  kubectl exec weave-net-d84sc -n weavek8sops -- ls /var/run/secrets/kubernetes.io/serviceaccount/
+ 1296  TOKEN=$(kubectl exec weave-net-d84sc -n weavek8sops -- cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+ 1297  echo $TOKEN
+ 1298  kubectl proxy &
+ 1299  curl -sk -H "Authorization: Bearer $TOKEN" https://127.0.0.1:6443/api/v1/namespaces/default/pods 
+ 1300  curl -sk -H "Authorization: Bearer $TOKEN" https://127.0.0.1:6443/api/v1/namespaces/default/pods | jq
+
+
+kubectl get secret/wks-controller-secrets -n weavek8sops -o yaml
+
+echo -n '$BASE64-STUFF' | base64 -d (for the sshKey, its the private key)
+
+
