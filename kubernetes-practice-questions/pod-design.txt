@@ -1,0 +1,179 @@
+LABEL AND SCHEDULING
+
+Exercise 1.
+
+See bash script in same repository
+
+
+Exercise 2. 
+
+kubectl get po -L
+
+OR 
+
+kubectl get po --all-namespaces --show-labels
+
+Exercise 3.
+
+kubectl label pod/nginx2 app=v2 --overwrite 
+
+Exercise 4.
+
+kubectl get po -l app //To show all with the label app, without the value of app
+
+kubectl get po -L app //(for a new column) which displays value of app
+
+Exercise 5.
+
+kubectl get po -l app=v2
+OR 
+kubectl get po -L app | grep 'v2'
+
+Exercise 6.
+
+See bash script number 2.
+
+//!#/bin/sh
+
+//for i in nginx1 nginx2 nginx3; do kubectl label po/$i app-; done
+
+Exercise 7.
+
+kubectl run --selector="accelerator=nvidia-tesla-p100"
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    env: test
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
+  nodeSelector:
+    accelerator: nvidia-tesla-p100
+
+Exercise 8.
+
+Shell script;
+
+//!#/bin/sh
+
+//for i in nginx1 nginx2 nginx3; do kubectl annotate po/$i description=mydescription; done
+
+Exercise 9.
+
+kubectl get po nginx -o jsonpath='{.metadata.annotations}{"\n"}'
+
+kubectl describe po/$pod | grep -i 'annotations'
+
+Exercise 10.
+
+kubectl annotate pod/nginx-5948844774-28hn4 description-
+
+Exercise 11.
+
+//!#/bin/sh
+
+//for i in nginx1 nginx2 nginx3; do kubectl delete $i; done
+
+OR 
+
+kubectl delete --selector="app=v1"
+
+OR (delete all individually via `kubectl delete`)
+
+
+DEPLOYMENTS
+
+Exercise 12.
+
+kubectl create deployment nginx --image=nginx:1.7.8 --replicas=2 --port=80 --dry-run=client
+
+Exercise 13.
+
+kubectl get deployment nginx -o yaml (> nginx-deployment.yml - optional to file)
+
+Exercise 14.
+
+kubectl get rs nginx -o yaml > rs-nginx.yml
+
+Exercise 15.
+
+kubectl get po nginx* -o yaml 
+
+Exercise 16.
+
+kubectl rollout status resource/resourcename
+kubectl rollout status deployment/nginx --revision=1 (to a specific revision can be done if you're watching a new one)
+
+ 
+Exercise 17.
+
+
+kubectl edit deployment/nginx
+deployment.extensions/nginx edited
+@Liams-MBP kubernetes-practice-questions % kubectl rollout status deployment/nginx
+Waiting for deployment "nginx" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "nginx" rollout to finish: 1 old replicas are pending termination...
+deployment "nginx" successfully rolled out
+@Liams-MBP kubernetes-practice-questions %
+
+//This approach opens the yaml in vim, so the usual esc, :, wq will save the changes and as you can see it watches automagically
+
+Another approach is the "patch" command - 
+
+kubectl patch deployment nginx --type='json' -p='[{"op": "replace", "path": "/spec/containers/0/image", "value":"nginx:1.7.9"}]'
+kubectl get po --show-labels | grep -i 'podtemplatehash-prefix'
+
+
+Exercise 18.
+
+kubectl rollout status deployment/nginx
+Waiting for deployment "nginx" rollout to finish: 1 old replicas are pending termination...
+^C%                                                                                                                                                        LiamBakerCS@Liams-MBP kubernetes-practice-questions % kubectl undo
+@Liams-MBP kubernetes-practice-questions % kubectl rollout undo deployment/nginx --to-revision=2
+deployment.extensions/nginx rolled back
+@Liams-MBP kubernetes-practice-questions % kubectl rollout status deployment/nginx
+deployment "nginx" successfully rolled out
+@Liams-MBP kubernetes-practice-questions %
+@Liams-MBP kubernetes-practice-questions % kubectl describe deployment nginx | grep -i 'image'
+
+Exercise 19.
+
+kubectl rollout history --revision=4
+
+
+@Liams-MBP kubernetes-practice-questions % kubectl rollout history deployment/nginx --revision=6
+
+Exercise 20.
+
+
+//First part we scale and set the image etc;
+
+@Liams-MBP kubernetes-practice-questions % kubectl autoscale deployment nginx --min=5 --max=10 --cpu-percent=80
+horizontalpodautoscaler.autoscaling/nginx autoscaled
+LiamBakerCS@Liams-MBP kubernetes-practice-questions % kubectl rollout pause deployment/nginx
+deployment.extensions/nginx paused
+LiamBakerCS@Liams-MBP kubernetes-practice-questions % kubectl set image deployment nginx nginx=nginx:1.9.1
+deployment.extensions/nginx image updated
+
+//Then we resume it after our changes
+
+@Liams-MBP kubernetes-practice-questions % kubectl rollout resume deployment/nginx
+deployment.extensions/nginx resumed
+LiamBakerCS@Liams-MBP kubernetes-practice-questions % kubectl rollout status deployment/nginx
+Waiting for deployment "nginx" rollout to finish: 1 of 5 updated replicas are available...
+Waiting for deployment "nginx" rollout to finish: 2 of 5 updated replicas are available...
+Waiting for deployment "nginx" rollout to finish: 3 of 5 updated replicas are available...
+Waiting for deployment "nginx" rollout to finish: 4 of 5 updated replicas are available...
+deployment "nginx" successfully rolled out
+LiamBakerCS@Liams-MBP kubernetes-practice-questions %
+
+kubectl scale deployment nginx --replicas 2
+
+kubectl delete hpa nginx
+
+
