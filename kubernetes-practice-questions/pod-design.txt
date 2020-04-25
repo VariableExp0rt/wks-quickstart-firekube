@@ -177,3 +177,78 @@ kubectl scale deployment nginx --replicas 2
 kubectl delete hpa nginx
 
 
+JOBS
+
+Exercise 1.
+
+kubectl create job perl --image=perl -- perl -Mbignum=bpi -wle 'print bpi(2000)'
+kubectl logs job perl
+OR 
+kubectl logs pod/job-pod
+
+Exercise 2.
+
+kubectl create job busybox --image=busybox -- /bin/sh -c 'echo hello;sleep 30;echo world'
+job.batch/busybox created
+@Liams-MacBook-Pro wks-quickstart-firekube % kubectl logs job busybox
+hello
+world
+
+kubectl delete job/busybox
+
+//Before deleting, we should do this
+kubectl get po | grep -i 'busybox'
+kubectl describe job busybox
+kubectl logs job busybox
+
+Exercise 4.
+
+
+kubectl create job busybox-deadline --image=busybox -o yaml --dry-run=client -- /bin/sh -c 'echo "hello world";sleep 15'
+cat <<EOF >>job-spec.yaml
+nano job-spec.yml
+job.spec.activeDeadlineSeconds: 30
+kubectl apply -f job-spec.yml
+kubectl describe job busybox
+kubectl delete job busybox
+
+
+Exercise 5.
+
+\\Same as above, but in the job.spec we will need to add another argument containing:
+\\completions: <int> 5
+\\This will then help us reach 5 before the job is terminated
+
+Then;
+
+kubectl get jobs --show-labels
+\\kubectl describe will also show you the number of containers and their ID's, and the total succeeded.
+
+
+Exercise 6.
+
+\\In order to run the jobs in parallel, add parallelism: 5 to the job.spec
+
+kubectl delete job busybox
+
+
+CRONJOBS
+
+Exercise 1.
+
+kubectl create cronjob busybox --image=busybox --schedule="*/1 * * * *" -- /bin/sh -c 'date; echo Hello from the Kubernetes cluster'
+
+\\From the kubernetes website
+\\https://kubernetes.io/docs/tasks/job/automated-tasks-with-cron-jobs/#creating-a-cron-job
+\\And once we create it there is something interesting when we describe it, the next job is scheduled on exactly a minute after successful create
+\\, not upon successfully completing, as expected.
+
+Exercise 2.
+
+kubectl create cronjob busybox-cj --image=busybox --schedule="*/2 * * * *" -o yaml --dry-run=client  -- /bin/sh -c 'date; echo Hello from the Kubernetes cluster' > cj-test.yaml
+nano cj-test.yaml (add activeDeadlineSeconds: 17)
+kubectl apply -f cj-test.yaml
+
+\\it is useful to know that you can use --schedule to pass in the cronjob schedule on the command line without having to write the yaml.
+
+
