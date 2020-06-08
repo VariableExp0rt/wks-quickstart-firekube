@@ -1,0 +1,143 @@
+root@opa-gatekeeper-control-plane:/# cat history.txt
+    1  ls
+    2  sudo
+    3  systemctl stop containerd
+    4  systemctl stop kubelet
+    5  exit
+    6  ctr containers list
+    7  docker ps
+    8  ps aux | grep kube-api
+    9  kubectl
+   10  kubectl get po
+   11  exit
+   12  systemctl start kubelet
+   13  exit
+   14  systemctl start containerd
+   15  exit
+   16  ctr --namespace k8s.io containers ls
+   17  docker logs --help
+   18  ctr --help
+   19  ctr kill --namespace k8s.io e804286fae04ad519b4850c7e2276adb309c4aa8acf9e8e19afda9653447a8a1
+   20  ctr --namespace k8s.io containers ls
+   21  ctr kill e804286fae04ad519b4850c7e2276adb309c4aa8acf9e8e19afda9653447a8a1
+   22  ctr containers kill e804286fae04ad519b4850c7e2276adb309c4aa8acf9e8e19afda9653447a8a1
+   23  ctr containers kill e804286fae04ad519b4850c7e2276adb309c4aa8acf9e8e19afda9653447a8a1 -- shutdown
+   24* ctr containers kill e804286fae04ad519b4850c7e2276adb309c4aa8acf9e8e19afda9653447a8a1 -p "i
+   25  ctr containers kill --help
+   26  ctr containers kill
+   27  ctr events
+   28  ls
+   29  cd kind/
+   30  ls
+   31  cd manifests/
+   32  ls
+   33  cd ..
+   34  cd bin/
+   35  ls
+   36  kubectl get pods
+   37  cd ../..
+   38  ls
+   39  ctr containers delete
+   40  ctr containers delete e804286fae04ad519b4850c7e2276adb309c4aa8acf9e8e19afda9653447a8a1
+   41  ctr --namespace k8s.io containers delete e804286fae04ad519b4850c7e2276adb309c4aa8acf9e8e19afda9653447a8a1
+   42  ctr containers stop
+   43  ctr containers pause
+   44  ctr tasks
+   45  ctr tasks pause e804286fae04ad519b4850c7e2276adb309c4aa8acf9e8e19afda9653447a8a1
+   46  ctr --namespace k8s.io tasks pause e804286fae04ad519b4850c7e2276adb309c4aa8acf9e8e19afda9653447a8a1
+   47  ctr --namespace k8s.io containers delete e804286fae04ad519b4850c7e2276adb309c4aa8acf9e8e19afda9653447a8a1
+   48  ctr tasks kill -s SIGKILL e804286fae04ad519b4850c7e2276adb309c4aa8acf9e8e19afda9653447a8a1
+   49  ctr --namespace k8s.io tasks kill -s SIGKILL e804286fae04ad519b4850c7e2276adb309c4aa8acf9e8e19afda9653447a8a1
+   50  ctr --namespace k8s.io containers delete e804286fae04ad519b4850c7e2276adb309c4aa8acf9e8e19afda9653447a8a1
+   51  ctr --namespace k8s.io tasks resume e804286fae04ad519b4850c7e2276adb309c4aa8acf9e8e19afda9653447a8a1
+   52  ctr --namespace k8s.io tasks kill -s SIGKILL e804286fae04ad519b4850c7e2276adb309c4aa8acf9e8e19afda9653447a8a1
+   53  ctr --namespace k8s.io containers kill -s SIGKILL e804286fae04ad519b4850c7e2276adb309c4aa8acf9e8e19afda9653447a8a1
+   54  ctr --namespace k8s.io containers delete e804286fae04ad519b4850c7e2276adb309c4aa8acf9e8e19afda9653447a8a1
+   55  ctr --namespace k8s.io containers list
+   56  ctr --namespace k8s.io containers delete e804286fae04ad519b4850c7e2276adb309c4aa8acf9e8e19afda9653447a8a1
+   57  ctr container events
+   58  ctr events --help
+   59  ctr events
+   60  ctr events --address
+   61  ctr events -address
+   62  ctr events
+   63  ctr --help
+   64  ctr content
+   65  ctr content get
+   66  ctr content get 46beeb5d6dead16e7a95b0f34c28b994f53aff1aab7f13e83cd21dd93742bc99
+   67  ctr
+   68  ctr events /var/run/containerd.sock
+   69  ctr events --address /var/run/containerd.sock
+   70  ctr events -a "/run/containerd/containerd.sock"
+   71  ctr logs
+   72  ctr | grep "--debug"
+   73  ctr | grep debug
+   74  ctr --debug
+   75  ctr containers --help
+   76  ctr containers info 46beeb5d6dead16e7a95b0f34c28b994f53aff1aab7f13e83cd21dd93742bc99
+   77  ctr --namespace k8s.io containers info 46beeb5d6dead16e7a95b0f34c28b994f53aff1aab7f13e83cd21dd93742bc99
+
+
+  117  ctr --namespace k8s.io tasks ls 46beeb5d6dead16e7a95b0f34c28b994f53aff1aab7f13e83cd21dd93742bc99
+  118  ctr --namespace k8s.io tasks exec --cwd / --tty e791befbe4f877cf96ee044c111e3428958120f519f17dfb3e2e0b696b6d6666 /bin/sh
+  119  ctr --namespace k8s.io tasks exec --exec-id 16537 --cwd / --tty e791befbe4f877cf96ee044c111e3428958120f519f17dfb3e2e0b696b6d6666 /bin/sh
+
+ctr --namespace k8s.io tasks exec --exec-id 16537 --tty e791befbe4f877cf96ee044c111e3428958120f519f17dfb3e2e0b696b6d6666 /bin/sh
+
+
+When I stopped the Kubelet and containerd.service unit file this happened;
+
+  Type     Reason     Age                From                                   Message
+  ----     ------     ----               ----                                   -------
+  Warning  Unhealthy  47m (x4 over 48m)  kubelet, opa-gatekeeper-control-plane  Liveness probe failed: Get https://172.18.0.2:6443/healthz: net/http: TLS handshake timeout
+  Warning  Unhealthy  47m (x2 over 47m)  kubelet, opa-gatekeeper-control-plane  Liveness probe failed: Get https://172.18.0.2:6443/healthz: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+  Warning  Unhealthy  15m                kubelet, opa-gatekeeper-control-plane  Liveness probe failed: Get https://172.18.0.2:6443/healthz: dial tcp 172.18.0.2:6443: connect: connection refused
+  Normal   Pulled     15m (x2 over 47m)  kubelet, opa-gatekeeper-control-plane  Container image "k8s.gcr.io/kube-apiserver:v1.18.2" already present on machine
+  Normal   Created    15m (x2 over 47m)  kubelet, opa-gatekeeper-control-plane  Created container kube-apiserver
+  Normal   Started    15m (x2 over 47m)  kubelet, opa-gatekeeper-control-plane  Started container kube-apiserver
+LiamBakerCS@Liams-MBP kind-cluster %
+
+I also deleted it to see how K8s recovered.
+
+
+ctr (containerD) tasks list is a lists of processes that are the actual pods;
+
+PID
+908 = kube-proxy
+16537 = kube-apiserver
+16616 = kube-scheduler
+13478 = kube-controller-manager
+663 = etcd
+
+This will be arbitrary because the PID is assigned when the process is created.
+
+There is also a script on the etcd process that is called migrate-if-needed.sh which can be used to perform updates to etcd itself based on environment variables;
+
+It is however owned by root.
+
+Rookie error, when querying ETCD, we need to supply the certs in the kubernetes/pki/etcd directory for it to return results, this is good to remember.
+
+
+
+sudo ctr --namespace example containers rm nginx-test-number-two
+fatalmetrics@fatalmetrics-VirtualBox:~$ sudo ctr --namespace example run --tty -d docker.io/library/nginx:latest nginx-test-number-two
+fatalmetrics@fatalmetrics-VirtualBox:~$ sudo ctr --namespace example tasks exec --tty --exec-id foo nginx-test-number-two /bin/sh
+# exit
+fatalmetrics@fatalmetrics-VirtualBox:~$ sudo ctr tasks exec --tty --exec-id 7218 nginx-test-number-two /bin/sh
+ctr: container "nginx-test-number-two" in namespace "default": not found
+fatalmetrics@fatalmetrics-VirtualBox:~$ sudo ctr --namespace example tasks exec --tty --exec-id 7218 nginx-test-number-two /bin/sh
+
+root      7187     1  0 11:19 ?        00:00:00 /usr/bin/containerd-shim-runc-v2 -namespace example -id nginx-test-number-two -address /run/containerd/containerd.sock
+root      7218  7187  0 11:19 pts/0    00:00:00 nginx: master process nginx -g daemon off;
+systemd+  7233  7218  0 11:19 pts/0    00:00:00 nginx: worker process
+
+root      7187     1  0 11:19 ?        00:00:00 /usr/bin/containerd-shim-runc-v2 -namespace example -id nginx-test-number-two -address /run/containerd/co
+root      7218  7187  0 11:19 pts/0    00:00:00 nginx: master process nginx -g daemon off;
+systemd+  7233  7218  0 11:19 pts/0    00:00:00 nginx: worker process
+root      7374  5676  0 11:31 pts/1    00:00:00 sudo ctr --namespace example tasks exec --tty --exec-id hello nginx-test-number-two /bin/sh
+root      7375  7374  0 11:31 pts/1    00:00:00 ctr --namespace example tasks exec --tty --exec-id hello nginx-test-number-two /bin/sh
+root      7396  7187  0 11:31 pts/1    00:00:00 /bin/sh
+fatalme+  7404  3270  0 11:32 pts/0    00:00:00 ps -ef
+
+sudo ctr --namespace example tasks exec --tty --exec-id arbitraryname nginx-test-number-two echo 'hello world'
+

@@ -1,0 +1,21 @@
+CONFIGURATION
+
+ConfigMaps
+
+Exercise 1.
+
+kubectl create configmap config --from-literal=foo=lala,foo2=lolo
+
+Exercise 2.
+
+kubectl get configmap config -o yaml | kubectl describe configmap config
+
+Exercise 3.
+
+echo -e "foo3=lili\nfoo4=lele" > config.txt
+
+kubectl create configmap testconfig --from-file=config.txt
+
+Exercise 4.
+
+
